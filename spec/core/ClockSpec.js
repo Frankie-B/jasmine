@@ -864,29 +864,6 @@ describe('Clock (acceptance)', function() {
     expect(delayedFn2).toHaveBeenCalled();
   });
 
-  it('does not mock the Date object by default', function() {
-    var delayedFunctionScheduler = new jasmineUnderTest.DelayedFunctionScheduler(),
-      global = { Date: Date },
-      mockDate = new jasmineUnderTest.MockDate(global),
-      clock = new jasmineUnderTest.Clock(
-        { setTimeout: setTimeout },
-        function() {
-          return delayedFunctionScheduler;
-        },
-        mockDate
-      );
-
-    clock.install();
-
-    expect(global.Date).toEqual(Date);
-
-    var now = new global.Date().getTime();
-
-    clock.tick(50);
-
-    expect(new global.Date().getTime() - now).not.toEqual(50);
-  });
-
   it('mocks the Date object and sets it to current time', function() {
     var delayedFunctionScheduler = new jasmineUnderTest.DelayedFunctionScheduler(),
       global = { Date: Date },
@@ -899,7 +876,7 @@ describe('Clock (acceptance)', function() {
         mockDate
       );
 
-    clock.install().mockDate();
+    clock.install();
 
     var now = new global.Date().getTime();
 
